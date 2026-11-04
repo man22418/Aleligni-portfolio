@@ -1,9 +1,7 @@
 // 1. Dark and Light Mode
-
 const themeBtn = document.getElementById("themeBtn");
 
-themeBtn.addEventListener("click", function() {
-
+themeBtn.addEventListener("click", function () {
     document.body.classList.toggle("light-mode");
 
     if (document.body.classList.contains("light-mode")) {
@@ -11,17 +9,14 @@ themeBtn.addEventListener("click", function() {
     } else {
         themeBtn.textContent = "🌙";
     }
-
 });
 
 
-// 2. Contact Form Validation
-
+// 2. Contact Form with EmailJS
 const contactForm = document.getElementById("contactForm");
 const formMessage = document.getElementById("formMessage");
 
-contactForm.addEventListener("submit", function(event) {
-
+contactForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const name = document.getElementById("name").value.trim();
@@ -30,29 +25,44 @@ contactForm.addEventListener("submit", function(event) {
 
     // Check empty fields
     if (name === "" || email === "" || message === "") {
-
         formMessage.textContent = "Please fill in all fields!";
         return;
-
     }
 
     // Check email
     if (!email.includes("@") || !email.includes(".")) {
-
         formMessage.textContent = "Please enter a valid email!";
         return;
-
     }
 
-    // Success message
-    formMessage.textContent =
-        "Thank you " + name + "! Your message is ready.";
+    // Send email using EmailJS
+    formMessage.textContent = "Sending message...";
 
-    contactForm.reset();
+    try {
+        await emailjs.send(
+            "service_dvramcp",
+            "template_mzuinyk",
+            {
+                from_name: name,
+                from_email: email,
+                message: message
+            }
+        );
 
+        formMessage.textContent =
+            "Thank you " + name + "! Your message was sent successfully.";
+
+        contactForm.reset();
+
+    } catch (error) {
+        console.error("EmailJS Error:", error);
+        formMessage.textContent =
+            "Sorry! Message could not be sent. Please try again.";
+    }
 });
-// Mobile Navigation Menu
 
+
+// 3. Mobile Navigation Menu
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
 
@@ -60,14 +70,13 @@ menuToggle.addEventListener("click", function () {
     navLinks.classList.toggle("active");
 
     if (navLinks.classList.contains("active")) {
-        menuToggle.textContent = "✖";
+        menuToggle.textContent = "✖️";
     } else {
         menuToggle.textContent = "☰";
     }
 });
 
 // Close menu after clicking a link
-
 document.querySelectorAll(".nav-links a").forEach(function (link) {
     link.addEventListener("click", function () {
         navLinks.classList.remove("active");
