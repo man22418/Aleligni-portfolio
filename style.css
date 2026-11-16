@@ -413,3 +413,19 @@ textarea::placeholder {
         display: flex;
     }
 }
+.contact-info {
+    margin-bottom: 25px;
+    line-height: 2.2;
+    text-align: center;
+}
+
+.contact-info a {
+    color: #3498db;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.contact-info a:hover {
+    color: #1abc9c;
+    text-decoration: underline;
+}
